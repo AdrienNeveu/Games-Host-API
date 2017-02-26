@@ -6,3 +6,13 @@ php:
   - '7.1'
   - hhvm
   - nightly
+
+before_script:
+  - mkdir bootstrap/cache
+  - cp .env.travis .env
+  - mysql -e 'create database dbtest;'
+  - composer self-update
+  - composer install --no-interaction
+
+script:
+  - vendor/bin/phpunit
