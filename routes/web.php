@@ -15,8 +15,6 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['middleware' => 'auth'], function ($api) {
     
-    $api->get('user', function () use ($api) {
-        return \Illuminate\Support\Facades\Auth::user();
-    });
+    $api->get('user', 'App\Http\Controllers\UserController@index');
     
 });

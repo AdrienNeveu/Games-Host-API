@@ -85,6 +85,7 @@ $app->routeMiddleware([
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+$app->register(App\Providers\PassportDingoProvider::class);
 
 app('Dingo\Api\Auth\Auth')->extend('custom', function ($app) {
     return new App\Providers\PassportDingoProvider;

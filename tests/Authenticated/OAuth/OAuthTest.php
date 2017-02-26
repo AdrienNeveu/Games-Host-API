@@ -2,10 +2,46 @@
 
 namespace Authenticated\OAuth;
 
-use Authenticated\AuthenticatedCase;
+use App\Models\User;
+use Laravel\Lumen\Testing\DatabaseMigrations;
+use Laravel\Passport\ClientRepository;
 
-class OAuthTest extends AuthenticatedCase
+class OAuthTest extends \TestCase
 {
+    use DatabaseMigrations;
+    
+    
+    private $client = NULL;
+    private $user = NULL;
+    private $authResponse = NULL;
+    private $userResponse = NULL;
+    
+    public function setUp()
+    {
+        parent::setUp();
+        
+        $this->authenticates();
+    }
+    
+    private function authenticates()
+    {
+        $clientRepository = new ClientRepository();
+        $this->client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
+        $this->user = factory(User::class)->create();
+        
+        $this->authResponse = $this->call('POST', '/oauth/token', [
+            'grant_type'    => 'password',
+            'scope'         => '*',
+            'username'      => $this->user->email,
+            'password'      => 'secret',
+            'client_id'     => $this->client->id,
+            'client_secret' => $this->client->secret
+        ]);
+        $tokenContent = json_decode($this->authResponse->getContent(), true);
+        $this->refreshApplication();
+        $this->userResponse = $this->json('GET', 'user', [], ["Authorization" => "Bearer " . $tokenContent["access_token"]]);
+    }
+    
     public function testCreateClient()
     {
         $this->seeInDatabase('oauth_clients', ['secret' => $this->client->secret, 'id' => $this->client->id]);
