@@ -12,8 +12,9 @@ before_script:
   - cp .env.travis .env
   - mysql -e 'create database dbtest;'
   - composer install --no-interaction
-  - php artisan migrate:install
-  - php artisan db:seed
+  - chmod -R 777 storage/
+  - php artisan migrate:install --no-interaction -vvv
+  - php artisan db:seed --no-interaction -vvv
   - php artisan passport:install
 
 script:
