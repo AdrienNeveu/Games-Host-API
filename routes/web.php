@@ -13,8 +13,12 @@
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', ['middleware' => 'auth'], function ($api) {
+$api->version('v1', function ($api) {
     
-    $api->get('user', 'App\Http\Controllers\UserController@index');
+    $api->group(['middleware' => 'auth'], function ($api) {
+        
+        $api->get('user', 'App\Http\Controllers\UserController@index');
+    });
     
+    $api->post('oauth/token', 'App\Http\Controllers\AuthController@issueToken');
 });

@@ -10,52 +10,65 @@ class OAuthTest extends \TestCase
 {
     use DatabaseMigrations;
     
-    
-    private $client = NULL;
-    private $user = NULL;
-    private $authResponse = NULL;
-    private $userResponse = NULL;
-    
-    public function setUp()
-    {
-        parent::setUp();
-        
-        $this->authenticates();
-    }
-    
-    private function authenticates()
-    {
-        $clientRepository = new ClientRepository();
-        $this->client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
-        $this->user = factory(User::class)->create();
-        
-        $this->authResponse = $this->call('POST', '/oauth/token', [
-            'grant_type'    => 'password',
-            'scope'         => '*',
-            'username'      => $this->user->email,
-            'password'      => 'secret',
-            'client_id'     => $this->client->id,
-            'client_secret' => $this->client->secret
-        ]);
-        $tokenContent = json_decode($this->authResponse->getContent(), true);
-        $this->refreshApplication();
-        $this->userResponse = $this->json('GET', 'user', [], ["Authorization" => "Bearer " . $tokenContent["access_token"]]);
-    }
-    
     public function testCreateClient()
     {
-        $this->seeInDatabase('oauth_clients', ['secret' => $this->client->secret, 'id' => $this->client->id]);
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
+        
+        $this->seeInDatabase('oauth_clients', ['secret' => $client->secret, 'id' => $client->id]);
     }
+    
     
     public function testCreateUser()
     {
-        $this->seeInDatabase('users', ['email' => $this->user->email]);
+        $user = factory(User::class)->create();
+    
+        $this->seeInDatabase('users', ['email' => $user->email]);
     }
     
+    /**
+     * @depends testCreateUser
+     * @depends testCreateClient
+     */
     public function testAuthenticatesUser()
     {
-        $this->assertEquals(200, $this->authResponse->getStatusCode());
-        $this->assertJson($this->authResponse->getContent());
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
+        $user = factory(User::class)->create();
+    
+        $authResponse = $this->call('POST', '/oauth/token', [
+            'grant_type'    => 'password',
+            'scope'         => '*',
+            'username'      => $user->email,
+            'password'      => 'secret',
+            'client_id'     => $client->id,
+            'client_secret' => $client->secret
+        ]);
+    
+        $this->assertEquals(200, $authResponse->getStatusCode());
+        $this->assertJson($authResponse->getContent());
+    }
+    
+    /**
+     * @depends testCreateUser
+     * @depends testCreateClient
+     */
+    public function testAuthenticatesUserWrong()
+    {
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
+        
+        $authResponse = $this->call('POST', '/oauth/token', [
+            'grant_type'    => 'password',
+            'scope'         => '*',
+            'username'      => "invalid@user.com",
+            'password'      => 'invalid_password',
+            'client_id'     => $client->id,
+            'client_secret' => $client->secret
+        ]);
+        
+        $this->assertEquals(401, $authResponse->getStatusCode());
+        $this->assertJson($authResponse->getContent());
     }
     
     /**
@@ -63,6 +76,23 @@ class OAuthTest extends \TestCase
      */
     public function testAccessToken()
     {
-        $this->userResponse->seeStatusCode(200);
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
+        $user = factory(User::class)->create();
+    
+        $authResponse = $this->call('POST', '/oauth/token', [
+            'grant_type'    => 'password',
+            'scope'         => '*',
+            'username'      => $user->email,
+            'password'      => 'secret',
+            'client_id'     => $client->id,
+            'client_secret' => $client->secret
+        ]);
+        
+        $tokenContent = json_decode($authResponse->getContent(), true);
+        $this->refreshApplication();
+        
+        $userResponse = $this->json('GET', 'user', [], ["Authorization" => "Bearer " . $tokenContent["access_token"]]);
+        $userResponse->seeStatusCode(200);
     }
 }
