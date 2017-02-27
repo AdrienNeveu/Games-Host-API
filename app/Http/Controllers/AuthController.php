@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Authentication management resource
  *
- * @Resource("Authentication", uri="/oauth")
+ * @Resource("Authentication", uri="/auth")
  */
 class AuthController extends AccessTokenController
 {
@@ -25,7 +25,7 @@ class AuthController extends AccessTokenController
      * Authenticates a user and returns an Access Token, that should
      * be sent along any restricted endpoints in the `Authorization` header.
      *
-     * @Post("/token")
+     * @Post("/login")
      * @Versions({"v1"})
      * @Transaction({
      *      @Request({"grant_type": "password", "scope": "*", "username": "john@doe.com", "password": "secret", "client_id": 5, "client_secret": "xxx"}),

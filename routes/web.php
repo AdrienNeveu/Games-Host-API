@@ -20,5 +20,5 @@ $api->version('v1', function ($api) {
         $api->get('user', 'App\Http\Controllers\UserController@index');
     });
     
-    $api->post('oauth/token', 'App\Http\Controllers\AuthController@issueToken');
+    $api->post('auth/login', 'App\Http\Controllers\AuthController@issueToken');
 });

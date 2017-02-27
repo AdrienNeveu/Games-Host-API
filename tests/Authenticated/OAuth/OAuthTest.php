@@ -36,7 +36,7 @@ class OAuthTest extends \TestCase
         $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
         $user = factory(User::class)->create();
     
-        $authResponse = $this->call('POST', '/oauth/token', [
+        $authResponse = $this->call('POST', '/auth/login', [
             'grant_type'    => 'password',
             'scope'         => '*',
             'username'      => $user->email,
@@ -58,7 +58,7 @@ class OAuthTest extends \TestCase
         $clientRepository = new ClientRepository();
         $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
         
-        $authResponse = $this->call('POST', '/oauth/token', [
+        $authResponse = $this->call('POST', '/auth/login', [
             'grant_type'    => 'password',
             'scope'         => '*',
             'username'      => "invalid@user.com",
@@ -80,7 +80,7 @@ class OAuthTest extends \TestCase
         $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
         $user = factory(User::class)->create();
     
-        $authResponse = $this->call('POST', '/oauth/token', [
+        $authResponse = $this->call('POST', '/auth/login', [
             'grant_type'    => 'password',
             'scope'         => '*',
             'username'      => $user->email,
