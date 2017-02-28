@@ -15,10 +15,15 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
     
-    $api->group(['middleware' => 'auth'], function ($api) {
-        
-        $api->get('user', 'App\Http\Controllers\UserController@index');
-    });
-    
     $api->post('auth/login', 'App\Http\Controllers\AuthController@issueToken');
+    
+    $api->group(['prefix' => 'user'], function ($api) {
+        
+        $api->post('/', 'App\Http\Controllers\UserController@store');
+        
+        $api->group(['middleware' => 'auth'], function ($api) {
+            $api->get('/', 'App\Http\Controllers\UserController@index');
+        });
+    });
+        
 });

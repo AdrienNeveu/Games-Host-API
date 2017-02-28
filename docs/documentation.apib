@@ -1,6 +1,6 @@
 FORMAT: 1A
 
-# Games Host
+# Games-Host API
 
 # User [/user]
 User management resource
@@ -32,10 +32,53 @@ Get a JSON representation of the current authenticated user.
                 "status_code": 401
             }
 
-# Authentication [/oauth]
+## Create user [POST /user]
+Creates a new user and returns its JSON representation.
+
++ Request (application/json)
+    + Body
+
+            {
+                "username": "john@doe.com",
+                "password": "secret",
+                "client_id": 5,
+                "client_secret": "xxxx"
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "user": {
+                    "id": 10,
+                    "email": "john@doe.com",
+                    "created_at": "2017-02-27 16:48:21"
+                }
+            }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "message": "Unauthorized",
+                "status_code": 401
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "message": "Could not create new user.",
+                "status_code": 422,
+                "errors": {
+                    "username": "The username field is required."
+                }
+            }
+
+# Authentication [/auth]
 Authentication management resource
 
-## Authenticates a user [POST /oauth/token]
+## Authenticates a user [POST /auth/login]
 Authenticates a user and returns an Access Token, that should
 be sent along any restricted endpoints in the `Authorization` header.
 

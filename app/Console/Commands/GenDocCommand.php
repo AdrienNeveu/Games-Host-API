@@ -37,7 +37,7 @@ class GenDocCommand extends Command
         passthru("aglio --theme-variables streak -i docs/documentation.apib -o docs/index.html --theme-template triple", $status_code);
         
         if ($status_code !== 0)
-            $this->error("Error while rendering documentation. You need `aglio` globally installed.");
+            $this->error("Error while rendering documentation. You need `aglio` globally installed. (`npm install -g aglio`)");
         else
             $this->info("Documentation was rendered successfully.");
     }
