@@ -20,3 +20,11 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'password' => $hasher->make("secret")
     ];
 });
+
+$factory->define(App\Models\HostServer::class, function (Faker\Generator $faker) {
+    
+    return [
+        'name' => $faker->safeColorName,
+        'ip' => $faker->localIpv4
+    ];
+});

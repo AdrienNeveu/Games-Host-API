@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\HostServer;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -16,5 +17,9 @@ class DatabaseSeeder extends Seeder
         // User Model
         User::truncate();
         factory(User::class, 10)->create();
+    
+        // HostServer Model
+        HostServer::truncate();
+        factory(HostServer::class, 5)->create();
     }
 }
