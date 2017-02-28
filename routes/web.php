@@ -15,7 +15,17 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
     
-    $api->post('auth/login', 'App\Http\Controllers\AuthController@issueToken');
+    $api->group(['prefix' => 'auth'], function ($api) {
+        $api->group(['prefix' => 'token'], function ($api) {
+            
+            $api->post('/', 'App\Http\Controllers\AuthController@issueToken');
+        
+            $api->group(['middleware' => 'auth'], function ($api) {
+                $api->delete('/', 'App\Http\Controllers\AuthController@revokeToken');
+            });
+        });
+    });
+    
     
     $api->group(['prefix' => 'user'], function ($api) {
         

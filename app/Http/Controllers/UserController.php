@@ -50,7 +50,7 @@ class UserController extends Controller
      * @Versions({"v1"})
      * @Transaction({
      *      @Request({"username": "john@doe.com", "password": "secret", "client_id": 5, "client_secret": "xxxx"}),
-     *      @Response(200, body={"user": {"id": 10, "email": "john@doe.com", "created_at": "2017-02-27 16:48:21"}}),
+     *      @Response(201, headers={"Location": "/user"}),
      *      @Response(401, body={"message": "Unauthorized", "status_code": 401}),
      *      @Response(422, body={"message": "Could not create new user.", "status_code": 422, "errors": {"username": "The username field is required."}})
      * })
@@ -79,7 +79,6 @@ class UserController extends Controller
         $user->password = app('hash')->make($request->password);
         $user->save();
         
-        return $user;
-    
+        return $this->response->created("/user");
     }
 }

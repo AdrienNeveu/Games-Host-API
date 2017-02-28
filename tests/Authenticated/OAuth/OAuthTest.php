@@ -3,11 +3,13 @@
 namespace Authenticated\OAuth;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Passport\ClientRepository;
 
 class OAuthTest extends \TestCase
 {
+    
     use DatabaseMigrations;
     
     public function testCreateClient()
@@ -22,7 +24,7 @@ class OAuthTest extends \TestCase
     public function testCreateUser()
     {
         $user = factory(User::class)->create();
-    
+        
         $this->seeInDatabase('users', ['email' => $user->email]);
     }
     
@@ -35,8 +37,8 @@ class OAuthTest extends \TestCase
         $clientRepository = new ClientRepository();
         $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
         $user = factory(User::class)->create();
-    
-        $authResponse = $this->call('POST', '/auth/login', [
+        
+        $authResponse = $this->call('POST', '/auth/token', [
             'grant_type'    => 'password',
             'scope'         => '*',
             'username'      => $user->email,
@@ -44,7 +46,7 @@ class OAuthTest extends \TestCase
             'client_id'     => $client->id,
             'client_secret' => $client->secret
         ]);
-    
+        
         $this->assertEquals(200, $authResponse->getStatusCode());
         $this->assertJson($authResponse->getContent());
     }
@@ -58,7 +60,7 @@ class OAuthTest extends \TestCase
         $clientRepository = new ClientRepository();
         $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
         
-        $authResponse = $this->call('POST', '/auth/login', [
+        $authResponse = $this->call('POST', '/auth/token', [
             'grant_type'    => 'password',
             'scope'         => '*',
             'username'      => "invalid@user.com",
@@ -79,8 +81,8 @@ class OAuthTest extends \TestCase
         $clientRepository = new ClientRepository();
         $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
         $user = factory(User::class)->create();
-    
-        $authResponse = $this->call('POST', '/auth/login', [
+        
+        $authResponse = $this->call('POST', '/auth/token', [
             'grant_type'    => 'password',
             'scope'         => '*',
             'username'      => $user->email,
@@ -92,7 +94,34 @@ class OAuthTest extends \TestCase
         $tokenContent = json_decode($authResponse->getContent(), true);
         $this->refreshApplication();
         
-        $userResponse = $this->json('GET', 'user', [], ["Authorization" => "Bearer " . $tokenContent["access_token"]]);
-        $userResponse->seeStatusCode(200);
+        $this->json('GET', 'user', [], ["Authorization" => "Bearer " . $tokenContent["access_token"]])
+            ->seeStatusCode(200);
+    }
+    
+    public function testLogout()
+    {
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->createPasswordGrantClient(NULL, "Test Application", "http://localhost");
+        $user = factory(User::class)->create();
+        
+        $authResponse = $this->call('POST', '/auth/token', [
+            'grant_type'    => 'password',
+            'scope'         => '*',
+            'username'      => $user->email,
+            'password'      => 'secret',
+            'client_id'     => $client->id,
+            'client_secret' => $client->secret
+        ]);
+        
+        $tokenContent = json_decode($authResponse->getContent(), true);
+        $this->refreshApplication();
+        
+        $this->json('DELETE', '/auth/token', [], ["Authorization" => "Bearer " . $tokenContent["access_token"]])
+            ->seeStatusCode(200);
+    
+        $this->refreshApplication();
+    
+        $this->json('GET', 'user', [], ["Authorization" => "Bearer " . $tokenContent["access_token"]])
+            ->seeStatusCode(401);
     }
 }

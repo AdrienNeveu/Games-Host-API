@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
+use Laravel\Passport\Token;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Authentication management resource
  *
- * @Resource("Authentication", uri="/auth")
+ * @Resource("Authentication", uri="/auth/token")
  */
 class AuthController extends AccessTokenController
 {
+    use Helpers;
+    
     
     /**
      * Code for OAuth authentication is located in dusterio\lumen-passport package.
@@ -25,7 +30,7 @@ class AuthController extends AccessTokenController
      * Authenticates a user and returns an Access Token, that should
      * be sent along any restricted endpoints in the `Authorization` header.
      *
-     * @Post("/login")
+     * @Post("/")
      * @Versions({"v1"})
      * @Transaction({
      *      @Request({"grant_type": "password", "scope": "*", "username": "john@doe.com", "password": "secret", "client_id": 5, "client_secret": "xxx"}),
@@ -36,5 +41,26 @@ class AuthController extends AccessTokenController
     public function issueToken(ServerRequestInterface $request)
     {
         return parent::issueToken($request);
+    }
+    
+    /**
+     * Revokes a user token access
+     *
+     * Revokes the user token access
+     *
+     * @Delete("/")
+     * @Versions({"v1"})
+     * @Transaction({
+     *      @Request(),
+     *      @Response(200),
+     *      @Response(401, body={"message": "Unauthorized", "status_code": 401})
+     * })
+     */
+    public function revokeToken(Request $request)
+    {
+        foreach ($request->user()->tokens as $token)
+        {
+            $token->revoke();
+        }
     }
 }

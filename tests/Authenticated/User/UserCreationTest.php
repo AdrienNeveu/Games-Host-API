@@ -30,7 +30,7 @@ class UserCreationTest extends \TestCase
             "username"      => "john@doe.com",
             "password"      => "test_password"
         ])
-            ->seeStatusCode(200);
+            ->seeStatusCode(201);
     
         $this->seeInDatabase('users', ['email' => 'john@doe.com']);
     }
@@ -43,7 +43,7 @@ class UserCreationTest extends \TestCase
             "username"      => "john@doe.com",
             "password"      => "test_password"
         ])
-            ->seeStatusCode(200);
+            ->seeStatusCode(201);
     
         $this->json('POST', 'user', [
             "client_id"     => $this->client->id,
