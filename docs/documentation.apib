@@ -120,3 +120,77 @@ Creates a new user and returns its JSON representation.
                     "username": "The username field is required."
                 }
             }
+
+# HostServer [/hostservers]
+HostServer management resource - A host server is the remote server that will host game servers.
+
+## Show the host server list [GET /hostservers]
+Get a JSON representation of all host servers.
+
+*The user needs to be an administrator to access this endpoint*
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer AccessToken
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "host_servers": [
+                    {
+                        "id": 10,
+                        "name": "Cthulhu",
+                        "ip": "192.168.0.1"
+                    }
+                ]
+            }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "message": "Unauthorized",
+                "status_code": 401
+            }
+
+## Show host server [GET /hostservers/{id}]
+Get a JSON representation of a host server represented by `id`.
+
+*The user needs to be an administrator to access this endpoint*
+
++ Parameters
+    + id: (integer, required) - The ID of the hostserver.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer AccessToken
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "host_server": {
+                    "id": 1,
+                    "name": "Cthulhu",
+                    "ip": "192.168.0.1"
+                }
+            }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "message": "Unauthorized",
+                "status_code": 401
+            }
+
++ Response 404 (application/json)
+    + Body
+
+            {
+                "message": "Resource Not Found",
+                "status_code": 404
+            }

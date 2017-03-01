@@ -35,5 +35,13 @@ $api->version('v1', function ($api) {
             $api->get('/', 'App\Http\Controllers\UserController@index');
         });
     });
+    
+    $api->group(['prefix' => 'hostservers'], function ($api) {
+        
+        $api->group(['middleware' => ['auth', 'admin']], function ($api) {
+            $api->get('/', 'App\Http\Controllers\HostServerController@index');
+            $api->get('/{id}', 'App\Http\Controllers\HostServerController@show');
+        });
+    });
         
 });

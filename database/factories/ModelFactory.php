@@ -22,6 +22,12 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->state(App\Models\User::class, 'non-admin', function ($faker) {
+    return [
+        'admin' => false,
+    ];
+});
+
 $factory->define(App\Models\HostServer::class, function (Faker\Generator $faker) {
     
     return [
