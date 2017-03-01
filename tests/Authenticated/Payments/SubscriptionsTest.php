@@ -20,11 +20,11 @@ class SubscriptionTest extends \TestCase
         
         $this->user = factory(User::class)->create();
     
-        Stripe::setApiKey(env("STRIPE_TEST_SECRET_KEY"));
+        Stripe::setApiKey(env("STRIPE_TEST_PUBLISHABLE_KEY"));
         
     }
     
-    public function testSubscribeGameServer()
+    /*public function testSubscribeGameServer()
     {
         $this->be($this->user);
     
@@ -37,6 +37,6 @@ class SubscriptionTest extends \TestCase
             )
         ));
         dd($token);
-    }
+    }*/
     
 }

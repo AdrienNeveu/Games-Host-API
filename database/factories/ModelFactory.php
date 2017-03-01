@@ -16,8 +16,9 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     $hasher = app()->make('hash');
     
     return [
-        'email' => $faker->email,
-        'password' => $hasher->make("secret")
+        'email'    => $faker->email,
+        'password' => $hasher->make("secret"),
+        'admin'    => true
     ];
 });
 
@@ -25,6 +26,6 @@ $factory->define(App\Models\HostServer::class, function (Faker\Generator $faker)
     
     return [
         'name' => $faker->safeColorName,
-        'ip' => $faker->localIpv4
+        'ip'   => $faker->localIpv4
     ];
 });
