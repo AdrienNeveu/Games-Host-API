@@ -14,7 +14,6 @@ class HostServer extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'ip',
     ];
 
     /**
