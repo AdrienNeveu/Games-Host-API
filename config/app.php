@@ -39,5 +39,18 @@ return [
     |
     */
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
-
+    /*
+    |--------------------------------------------------------------------------
+    | Authorized Currencies
+    |--------------------------------------------------------------------------
+    |
+    | The authorized currencies are used by Stripe and the Swap package.
+    | Only those can be used across the application. Make sure the currency
+    | codes are the same on Stripe and the services used by Swap.
+    | Zero-decimal currencies like KRW or JPY are not supported.
+    |
+    */
+    'currencies' => [
+        'usd', 'eur', 'aud', 'cad', 'gbp', 'chf', 'brl', 'rub'
+    ]
 ];

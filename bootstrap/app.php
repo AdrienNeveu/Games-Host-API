@@ -23,9 +23,14 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__ . '/../')
 );
 
-$app->withFacades();
+// Register the facade
+$app->withFacades(true, [
+    Swap\Laravel\Facades\Swap::class => 'Swap'
+]);
 
 $app->withEloquent();
+
+$app->configure('swap');
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +92,7 @@ $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 $app->register(App\Providers\PassportServiceProvider::class);
 $app->register(App\Providers\PassportDingoProvider::class);
+$app->register(Swap\Laravel\SwapServiceProvider::class);
 
 app('Dingo\Api\Auth\Auth')->extend('custom', function ($app) {
     return new App\Providers\PassportDingoProvider;
