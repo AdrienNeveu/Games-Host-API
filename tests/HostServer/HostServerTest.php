@@ -51,15 +51,13 @@ class HostServerTest extends \TestCase
         $this->be($this->user);
         
         $hostserver = $this->hostservers->first();
-
+        
         $this->json('GET', '/hostservers/' . $hostserver->id)
             ->seeStatusCode(200)
             ->seeJson([
-                'host_server' => [
-                    'id' => $hostserver->id,
-                    'name' => $hostserver->name,
-                    'ip' => $hostserver->ip
-                ]
+                'id'   => $hostserver->id,
+                'name' => $hostserver->name,
+                'ip'   => $hostserver->ip
             ]);
     }
     

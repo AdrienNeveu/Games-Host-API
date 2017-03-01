@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGameServersTable extends Migration
+class CreateGamesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateGameServersTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_servers', function (Blueprint $table) {
+        Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
             $table->string("name", 255);
             $table->string("short_name", 15);
+            $table->boolean('disabled')->default(false);
             $table->integer("minplayers");
             $table->integer("maxplayers");
             $table->integer("cents_per_slots");
@@ -30,6 +31,6 @@ class CreateGameServersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('game_servers');
+        Schema::dropIfExists('games');
     }
 }

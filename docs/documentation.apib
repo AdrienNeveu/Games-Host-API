@@ -124,7 +124,7 @@ Creates a new user and returns its JSON representation.
 # HostServer [/hostservers]
 HostServer management resource - A host server is the remote server that will host game servers.
 
-## Show the host server list [GET /hostservers]
+## Show the host servers list [GET /hostservers]
 Get a JSON representation of all host servers.
 
 *The user needs to be an administrator to access this endpoint*
@@ -185,6 +185,56 @@ Get a JSON representation of a host server represented by `id`.
             {
                 "message": "Unauthorized",
                 "status_code": 401
+            }
+
++ Response 404 (application/json)
+    + Body
+
+            {
+                "message": "Resource Not Found",
+                "status_code": 404
+            }
+
+# Game [/games]
+Game management resource
+
+## Show the games list [GET /games]
+Get a JSON representation of all available games.
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "games": [
+                    {
+                        "id": 10,
+                        "name": "Counter Strike Source",
+                        "shortname": "css",
+                        "minplayers": 5,
+                        "maxplayers": 64,
+                        "cents_per_slots": 25
+                    }
+                ]
+            }
+
+## Show host server [GET /games/{id}]
+Get a JSON representation of a game represented by `id`.
+
++ Parameters
+    + id: (integer, required) - The ID of the game.
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "game": {
+                    "id": 10,
+                    "name": "Counter Strike Source",
+                    "shortname": "css",
+                    "minplayers": 5,
+                    "maxplayers": 64,
+                    "cents_per_slots": 25
+                }
             }
 
 + Response 404 (application/json)

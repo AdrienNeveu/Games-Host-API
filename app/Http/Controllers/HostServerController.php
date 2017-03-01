@@ -21,7 +21,7 @@ class HostServerController extends Controller
     }
     
     /**
-     * Show the host server list
+     * Show the host servers list
      *
      *
      * Get a JSON representation of all host servers.

@@ -35,3 +35,14 @@ $factory->define(App\Models\HostServer::class, function (Faker\Generator $faker)
         'ip'   => $faker->localIpv4
     ];
 });
+
+$factory->define(App\Models\Game::class, function (Faker\Generator $faker) {
+    
+    return [
+        'name'            => $faker->company,
+        'short_name'      => $faker->colorName,
+        'minplayers'      => $faker->numberBetween(1, 32),
+        'maxplayers'      => $faker->numberBetween(32, 64),
+        'cents_per_slots' => $faker->numberBetween(15, 35),
+    ];
+});

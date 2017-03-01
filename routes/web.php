@@ -19,7 +19,7 @@ $api->version('v1', function ($api) {
         $api->group(['prefix' => 'token'], function ($api) {
             
             $api->post('/', 'App\Http\Controllers\AuthController@issueToken');
-        
+            
             $api->group(['middleware' => 'auth'], function ($api) {
                 $api->delete('/', 'App\Http\Controllers\AuthController@revokeToken');
             });
@@ -43,5 +43,10 @@ $api->version('v1', function ($api) {
             $api->get('/{id}', 'App\Http\Controllers\HostServerController@show');
         });
     });
-        
+    
+    $api->group(['prefix' => 'games'], function ($api) {
+        $api->get('/', 'App\Http\Controllers\GameController@index');
+        $api->get('/{id}', 'App\Http\Controllers\GameController@show');
+    });
+    
 });

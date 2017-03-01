@@ -24,6 +24,7 @@ class UserCreationTest extends \TestCase
     
     public function testUserCreationSuccess()
     {
+
         $this->json('POST', 'user', [
             "client_id"     => $this->client->id,
             "client_secret" => $this->client->secret,

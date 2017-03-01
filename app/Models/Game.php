@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Swap\Laravel\Facades\Swap;
 
-class GameServer extends Model
+class Game extends Model
 {
+    
+    public $timestamps = false;
     
     /**
      * The attributes that are mass assignable.
@@ -23,6 +25,7 @@ class GameServer extends Model
      * @var array
      */
     protected $hidden = [
+        "disabled"
     ];
     
     /**
@@ -37,12 +40,12 @@ class GameServer extends Model
             throw new \Symfony\Component\HttpKernel\Exception\HttpException(500, "Players amount invalid");
         
         $currency == NULL ? env('CURRENCY') : $currency;
-        
-        if (!in_array(strtolower($currency), env('app.currencies')))
+
+        if (!in_array(strtolower($currency), config('app.currencies')))
             throw new \Symfony\Component\HttpKernel\Exception\HttpException(500, "Unauthorized currency");
         
-        $rate = Swap::latest(env('CURRENCY') . '/' . ($currency || env('CURRENCY')))->getValue();
+        $rate = Swap::latest(env('CURRENCY') . '/' . $currency)->getValue();
         
-        return floor($this->cents_per_slots * $players * $rate);
+        return intval($this->cents_per_slots * $players * $rate);
     }
 }
