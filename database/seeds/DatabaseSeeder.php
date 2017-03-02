@@ -3,6 +3,7 @@
 use App\Models\HostServer;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // User Model
-        User::truncate();
+        DB::table('users')->delete();
         factory(User::class, 10)->create();
     
         // HostServer Model
-        HostServer::truncate();
+        DB::table('host_servers')->delete();
         factory(HostServer::class, 5)->create();
     }
 }
