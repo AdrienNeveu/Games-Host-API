@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateGameServersTable extends Migration
 {
+    
     /**
      * Run the migrations.
      *
@@ -18,6 +19,8 @@ class CreateGameServersTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('game_id')->unsigned();
             $table->integer('host_server_id')->unsigned();
+            $table->integer('players');
+            $table->integer('port');
             $table->smallInteger("installed")->default(0); // 0: not installed, 1: installing, 2: installed
             $table->timestamps();
             

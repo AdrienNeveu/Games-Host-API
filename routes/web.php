@@ -37,6 +37,9 @@ $api->version('v1', function ($api) {
             $api->group(['prefix' => 'gameservers'], function ($api) {
                 $api->get('/', 'App\Http\Controllers\User\GameServerController@index');
                 $api->get('/{id}', 'App\Http\Controllers\User\GameServerController@show');
+                $api->get('/{id}/start', 'App\Http\Controllers\User\GameServerController@start');
+                $api->get('/{id}/stop', 'App\Http\Controllers\User\GameServerController@stop');
+                $api->get('/{id}/restart', 'App\Http\Controllers\User\GameServerController@restart');
             });
         });
     });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Jobs\StartServerJob;
+use App\Jobs\StopServerJob;
 use App\Models\GameServer;
 use Dingo\Api\Routing\Helpers;
 
@@ -48,7 +50,7 @@ class GameServerController extends \App\Http\Controllers\Controller
      * @Get("/{id}")
      * @Versions({"v1"})
      * @Parameters({
-     *      @Parameter("id", type="integer", required=true, description="The ID of the hostserver.")
+     *      @Parameter("id", type="integer", required=true, description="The ID of the game server.")
      * })
      * @Transaction({
      *      @Request(headers={"Authorization": "Bearer AccessToken"}),
@@ -59,14 +61,114 @@ class GameServerController extends \App\Http\Controllers\Controller
      */
     public function show($id)
     {
-        $hostserver = GameServer::where([
+        $gameserver = GameServer::where([
             'id' => $id,
             'user_id' => $this->auth->user()->id
         ])->with("game", "hostserver")->first();
         
-        if (!$hostserver)
+        if (!$gameserver)
             return $this->response->errorNotFound("Resource Not Found");
         
-        return $hostserver;
+        return $gameserver;
+    }
+    
+    /**
+     * Start a user's game server
+     *
+     *
+     * Will start a user's game server.
+     *
+     * *The user needs to own the game server to access this endpoint*
+     *
+     * @Get("/{id}/start")
+     * @Versions({"v1"})
+     * @Parameters({
+     *      @Parameter("id", type="integer", required=true, description="The ID of the game server.")
+     * })
+     * @Transaction({
+     *      @Request(headers={"Authorization": "Bearer AccessToken"}),
+     *      @Response(200),
+     *      @Response(401, body={"message": "Unauthorized", "status_code": 401}),
+     *      @Response(404, body={"message": "Resource Not Found", "status_code": 404})
+     * })
+     */
+    public function start($id)
+    {
+        $gameserver = GameServer::where([
+            'id' => $id,
+            'user_id' => $this->auth->user()->id
+        ])->first();
+    
+        if (!$gameserver)
+            return $this->response->errorNotFound("Resource Not Found");
+        
+        dispatch(new StartServerJob($gameserver));
+    }
+    
+    /**
+     * Stop a user's game server
+     *
+     *
+     * Will stop a user's game server.
+     *
+     * *The user needs to own the game server to access this endpoint*
+     *
+     * @Get("/{id}/stop")
+     * @Versions({"v1"})
+     * @Parameters({
+     *      @Parameter("id", type="integer", required=true, description="The ID of the game server.")
+     * })
+     * @Transaction({
+     *      @Request(headers={"Authorization": "Bearer AccessToken"}),
+     *      @Response(200),
+     *      @Response(401, body={"message": "Unauthorized", "status_code": 401}),
+     *      @Response(404, body={"message": "Resource Not Found", "status_code": 404})
+     * })
+     */
+    public function stop($id)
+    {
+        $gameserver = GameServer::where([
+            'id' => $id,
+            'user_id' => $this->auth->user()->id
+        ])->first();
+        
+        if (!$gameserver)
+            return $this->response->errorNotFound("Resource Not Found");
+        
+        dispatch(new StopServerJob($gameserver));
+    }
+    
+    /**
+     * Restart a user's game server
+     *
+     *
+     * Will restart a user's game server.
+     *
+     * *The user needs to own the game server to access this endpoint*
+     *
+     * @Get("/{id}/restart")
+     * @Versions({"v1"})
+     * @Parameters({
+     *      @Parameter("id", type="integer", required=true, description="The ID of the game server.")
+     * })
+     * @Transaction({
+     *      @Request(headers={"Authorization": "Bearer AccessToken"}),
+     *      @Response(200),
+     *      @Response(401, body={"message": "Unauthorized", "status_code": 401}),
+     *      @Response(404, body={"message": "Resource Not Found", "status_code": 404})
+     * })
+     */
+    public function restart($id)
+    {
+        $gameserver = GameServer::where([
+            'id' => $id,
+            'user_id' => $this->auth->user()->id
+        ])->first();
+        
+        if (!$gameserver)
+            return $this->response->errorNotFound("Resource Not Found");
+    
+        dispatch((new StopServerJob($gameserver))->onQueue('gameserver.restart'));
+        dispatch((new StartServerJob($gameserver))->onQueue('gameserver.restart'));
     }
 }

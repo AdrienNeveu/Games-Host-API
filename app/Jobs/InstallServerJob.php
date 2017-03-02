@@ -31,12 +31,12 @@ class InstallServerJob extends Job
         $config = $this->gameServer->hostServer->auth_info;
         $config['timeout'] = config('app.game_install_timeout');
 
-        RemoteFacade::connect($config['timeout'])
+        RemoteFacade::connect($config)
             ->run([
                 'mkdir -p ' . $config['install_path'] . '/' . $this->gameServer->id . ' && cd "$_"',
                 'wget https://gameservermanagers.com/dl/' . $this->gameServer->game->linuxgsm_bin,
                 'chmod +x ' . $this->gameServer->game->linuxgsm_bin,
-                'yes | ./' . $this->gameServer->game->linuxgsm_bin . ' auto-install'
+                'yes | ./' . $this->gameServer->game->linuxgsm_bin . ' install'
             ]);
         
         $this->gameServer->update(['installed' => 2]);

@@ -173,7 +173,7 @@ Get a JSON representation of a user's game server represented by `id`.
 *The user needs to own the game server to access this endpoint*
 
 + Parameters
-    + id: (integer, required) - The ID of the hostserver.
+    + id: (integer, required) - The ID of the game server.
 
 + Request (application/json)
     + Headers
@@ -206,6 +206,99 @@ Get a JSON representation of a user's game server represented by `id`.
                     }
                 }
             }
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "message": "Unauthorized",
+                "status_code": 401
+            }
+
++ Response 404 (application/json)
+    + Body
+
+            {
+                "message": "Resource Not Found",
+                "status_code": 404
+            }
+
+## Start a user's game server [GET /user/gameservers/{id}/start]
+Will start a user's game server.
+
+*The user needs to own the game server to access this endpoint*
+
++ Parameters
+    + id: (integer, required) - The ID of the game server.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer AccessToken
+
++ Response 200 (application/json)
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "message": "Unauthorized",
+                "status_code": 401
+            }
+
++ Response 404 (application/json)
+    + Body
+
+            {
+                "message": "Resource Not Found",
+                "status_code": 404
+            }
+
+## Stop a user's game server [GET /user/gameservers/{id}/stop]
+Will stop a user's game server.
+
+*The user needs to own the game server to access this endpoint*
+
++ Parameters
+    + id: (integer, required) - The ID of the game server.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer AccessToken
+
++ Response 200 (application/json)
+
++ Response 401 (application/json)
+    + Body
+
+            {
+                "message": "Unauthorized",
+                "status_code": 401
+            }
+
++ Response 404 (application/json)
+    + Body
+
+            {
+                "message": "Resource Not Found",
+                "status_code": 404
+            }
+
+## Restart a user's game server [GET /user/gameservers/{id}/restart]
+Will restart a user's game server.
+
+*The user needs to own the game server to access this endpoint*
+
++ Parameters
+    + id: (integer, required) - The ID of the game server.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer AccessToken
+
++ Response 200 (application/json)
 
 + Response 401 (application/json)
     + Body

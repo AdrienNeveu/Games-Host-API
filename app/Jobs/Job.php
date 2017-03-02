@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Collective\Remote\RemoteFacade;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -21,4 +22,16 @@ abstract class Job implements ShouldQueue
     */
 
     use InteractsWithQueue, Queueable, SerializesModels;
+    
+    protected function executeBinCommand($gameServer, $command, $timeout = 25)
+    {
+        $config = $gameServer->hostServer->auth_info;
+        $config['timeout'] = $timeout;
+    
+        RemoteFacade::connect($config)
+            ->run([
+                'cd ' . $config['install_path'] . '/' . $gameServer->id,
+                './' . $gameServer->game->linuxgsm_bin . ' ' . $command,
+            ]);
+    }
 }

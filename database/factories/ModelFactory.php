@@ -69,9 +69,13 @@ $factory->define(GameServer::class, function (Faker\Generator $faker) {
     if (HostServer::count() == 0)
         factory(HostServer::class)->create();
     
+    $game = Game::inRandomOrder()->first();
+    
     return [
         'user_id'        => User::inRandomOrder()->first()->id,
-        'game_id'        => Game::inRandomOrder()->first()->id,
-        'host_server_id' => HostServer::inRandomOrder()->first()->id
+        'game_id'        => $game->id,
+        'host_server_id' => HostServer::inRandomOrder()->first()->id,
+        'players'        => $faker->numberBetween($game->minplayers, $game->maxplayers),
+        'port'           => $faker->numberBetween(1111, 9999),
     ];
 });
