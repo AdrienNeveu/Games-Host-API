@@ -1,6 +1,6 @@
 language: php
 
-sudo: required
+sudo: true
 
 php:
   - '5.6'
@@ -8,8 +8,8 @@ php:
   - '7.1'
 
 before_install:
-  -  chmod +x ./tests/scripts/*
-  - ./tests/scripts/travis_mysql_5.7.sh
+  - bash ./tests/scripts/travis_install_mysql_5.7.sh
+  - mysql --version
 
 before_script:
   - mkdir bootstrap/cache
