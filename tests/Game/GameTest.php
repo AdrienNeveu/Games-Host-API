@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Game;
+
+
 use App\Models\Game;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
@@ -22,10 +25,8 @@ class GameTest extends \TestCase
         $this->json('GET', '/games')
             ->seeStatusCode(200)
             ->seeJsonStructure([
-                'games' => [
-                    '*' => [
-                        'id', 'name', 'short_name'
-                    ]
+                '*' => [
+                    'id', 'name', 'short_name'
                 ]
             ]);
     }
@@ -33,7 +34,7 @@ class GameTest extends \TestCase
     public function testShowGameSuccessful()
     {
         $game = $this->games->first();
-        
+    
         $this->json('GET', '/games/' . $game->id)
             ->seeStatusCode(200)
             ->seeJson([

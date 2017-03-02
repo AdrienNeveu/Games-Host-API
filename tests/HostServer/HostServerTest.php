@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\HostServer;
+
 use App\Models\HostServer;
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Authentication;
+
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Passport\ClientRepository;

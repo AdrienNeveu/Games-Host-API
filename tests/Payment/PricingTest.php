@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Payment;
+
+
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Swap\Laravel\Facades\Swap;
 

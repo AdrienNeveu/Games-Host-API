@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Games;
 
 use App\Models\Game;
 use App\Models\HostServer;
@@ -12,7 +12,7 @@ use Illuminate\Routing\Controller;
  *
  * @Resource("Game", uri="/games")
  */
-class GameController extends Controller
+class GameController extends \App\Http\Controllers\Controller
 {
     
     use Helpers;
@@ -30,16 +30,16 @@ class GameController extends Controller
      * @Get("/")
      * @Versions({"v1"})
      * @Transaction({
-     *      @Response(200, body={"games": {{"id": 10, "name": "Counter Strike Source", "shortname": "css", "minplayers": 5, "maxplayers": 64, "cents_per_slots": 25}}}),
+     *      @Response(200, body={{"id": 10, "name": "Counter Strike Source", "shortname": "css", "minplayers": 5, "maxplayers": 64, "cents_per_slots": 25}}),
      * })
      */
     public function index()
     {
-        return Game::where('disabled', false)->get();
+        return Game::where('disabled', false)->get()->all();
     }
     
     /**
-     * Show host server
+     * Show a game
      *
      *
      * Get a JSON representation of a game represented by `id`.
@@ -59,8 +59,8 @@ class GameController extends Controller
         $game = Game::find($id);
         
         if (!$game)
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException("Resource Not Found");
-        
-        return $game;
+            return $this->response->errorNotFound("Resource Not Found");
+    
+        return $game->first();
     }
 }

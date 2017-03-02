@@ -25,7 +25,7 @@ class Game extends Model
      * @var array
      */
     protected $hidden = [
-        "disabled"
+        "disabled", "linuxgsm_bin"
     ];
     
     /**

@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\GameServer;
+
+
 use App\Models\Game;
 use App\Models\GameServer;
 use App\Models\HostServer;

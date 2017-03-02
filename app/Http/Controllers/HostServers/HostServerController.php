@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\HostServers;
 
 use App\Models\HostServer;
 use Dingo\Api\Routing\Helpers;
@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller;
  *
  * @Resource("HostServer", uri="/hostservers")
  */
-class HostServerController extends Controller
+class HostServerController extends \App\Http\Controllers\Controller
 {
     
     use Helpers;
@@ -32,13 +32,13 @@ class HostServerController extends Controller
      * @Versions({"v1"})
      * @Transaction({
      *      @Request(headers={"Authorization": "Bearer AccessToken"}),
-     *      @Response(200, body={"host_servers": {{"id": 10, "name": "Cthulhu", "auth_info": {"key":"","host":"127.0.0.1:22","agent":"","keytext":"","password":"","username":"root","keyphrase":""}}}}),
+     *      @Response(200, body={{"id": 10, "name": "Cthulhu", "auth_info": {"key":"","host":"127.0.0.1:22","agent":"","keytext":"","password":"","username":"root","keyphrase":""}}}),
      *      @Response(401, body={"message": "Unauthorized", "status_code": 401})
      * })
      */
     public function index()
     {
-        return HostServer::get();
+        return HostServer::all();
     }
 
     /**
@@ -66,7 +66,7 @@ class HostServerController extends Controller
         $hostserver = HostServer::find($id);
         
         if (!$hostserver)
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException("Resource Not Found");
+            return $this->response->errorNotFound("Resource Not Found");
         
         return $hostserver;
     }

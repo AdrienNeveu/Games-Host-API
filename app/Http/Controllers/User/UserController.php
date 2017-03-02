@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use Dingo\Api\Http\Request;
@@ -14,7 +14,7 @@ use Laravel\Passport\ClientRepository;
  *
  * @Resource("User", uri="/user")
  */
-class UserController extends Controller
+class UserController extends \App\Http\Controllers\Controller
 {
     
     use Helpers;

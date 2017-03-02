@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\User;
+
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
