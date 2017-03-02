@@ -13,6 +13,7 @@ class GameServer extends Model
      * @var array
      */
     protected $fillable = [
+        'installed'
     ];
     
     /**

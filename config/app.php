@@ -52,5 +52,16 @@ return [
     */
     'currencies' => [
         'usd', 'eur', 'aud', 'cad', 'gbp', 'chf', 'brl', 'rub'
-    ]
+    ],
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Game Installation Timeout
+    |--------------------------------------------------------------------------
+    |
+    | The game installation timeout defines the amount of seconds the
+    | remote connection will hang while a game server is being installed.
+    |
+    */
+    'game_install_timeout' => 999,
 ];

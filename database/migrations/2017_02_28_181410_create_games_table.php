@@ -15,8 +15,9 @@ class CreateGamesTable extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("name", 255);
-            $table->string("short_name", 15);
+            $table->string("name");
+            $table->string("short_name", 25);
+            $table->string("linuxgsm_bin");
             $table->boolean('disabled')->default(false);
             $table->integer("minplayers");
             $table->integer("maxplayers");
