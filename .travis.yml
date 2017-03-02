@@ -5,6 +5,11 @@ php:
   - '7.0'
   - '7.1'
 
+before_install:
+  -  chmod +x ./tests/scripts/*
+  - ./tests/scripts/travis_mysql_5.7.sh
+  - ./tests/scripts/travis_mysql_reset_root_password.sh
+
 before_script:
   - mkdir bootstrap/cache
   - cp .env.travis .env
