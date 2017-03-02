@@ -1,9 +1,6 @@
 <?php
 
-namespace Authenticated\OAuth;
-
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Passport\ClientRepository;
 

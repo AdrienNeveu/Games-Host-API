@@ -1,7 +1,5 @@
 <?php
 
-namespace Authenticated\User;
-
 use App\Models\HostServer;
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -32,7 +30,7 @@ class HostServerTest extends \TestCase
             ->seeJsonStructure([
                 'host_servers' => [
                     '*' => [
-                        'id', 'name', 'ip'
+                        'id', 'name'
                     ]
                 ]
             ]);
@@ -57,7 +55,6 @@ class HostServerTest extends \TestCase
             ->seeJson([
                 'id'   => $hostserver->id,
                 'name' => $hostserver->name,
-                'ip'   => $hostserver->ip
             ]);
     }
     

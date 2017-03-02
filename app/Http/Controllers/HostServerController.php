@@ -32,7 +32,7 @@ class HostServerController extends Controller
      * @Versions({"v1"})
      * @Transaction({
      *      @Request(headers={"Authorization": "Bearer AccessToken"}),
-     *      @Response(200, body={"host_servers": {{"id": 10, "name": "Cthulhu", "ip": "192.168.0.1"}}}),
+     *      @Response(200, body={"host_servers": {{"id": 10, "name": "Cthulhu", "auth_info": {"key":"","host":"127.0.0.1:22","agent":"","keytext":"","password":"","username":"root","keyphrase":""}}}}),
      *      @Response(401, body={"message": "Unauthorized", "status_code": 401})
      * })
      */
@@ -40,7 +40,7 @@ class HostServerController extends Controller
     {
         return HostServer::get();
     }
-    
+
     /**
      * Show host server
      *
@@ -56,7 +56,7 @@ class HostServerController extends Controller
      * })
      * @Transaction({
      *      @Request(headers={"Authorization": "Bearer AccessToken"}),
-     *      @Response(200, body={"host_server":{"id":1,"name":"Cthulhu","ip":"192.168.0.1"}}),
+     *      @Response(200, body={"host_server":{"id":1, "name":"Cthulhu", "auth_info": {"key":"","host":"127.0.0.1:22","agent":"","keytext":"","password":"","username":"root","keyphrase":""}}}),
      *      @Response(401, body={"message": "Unauthorized", "status_code": 401}),
      *      @Response(404, body={"message": "Resource Not Found", "status_code": 404})
      * })

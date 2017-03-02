@@ -29,6 +29,14 @@ class Game extends Model
     ];
     
     /**
+     * The game servers that belongs to this game
+     */
+    public function gameServers()
+    {
+        return $this->hasMany('App\Models\GameServer');
+    }
+    
+    /**
      * @param $players  The amount of players
      * @param $currency The currency to use
      *

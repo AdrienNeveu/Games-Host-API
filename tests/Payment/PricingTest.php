@@ -1,7 +1,5 @@
 <?php
 
-namespace Authenticated\User;
-
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Swap\Laravel\Facades\Swap;
 

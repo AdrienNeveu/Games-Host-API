@@ -29,4 +29,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password', 'updated_at'
     ];
+    
+    /**
+     * The game servers the user owns
+     */
+    public function gameServers()
+    {
+        return $this->hasMany('App\Models\GameServer');
+    }
 }

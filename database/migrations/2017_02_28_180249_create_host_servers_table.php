@@ -16,7 +16,7 @@ class CreateHostServersTable extends Migration
         Schema::create('host_servers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->ipAddress('ip');
+            $table->json('auth_info');
         });
     }
 
