@@ -65,9 +65,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    Nord\Lumen\Cors\CorsMiddleware::class
+]);
 
 $app->routeMiddleware([
     'auth'  => App\Http\Middleware\Authenticate::class,
@@ -95,6 +95,7 @@ $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 $app->register(App\Providers\PassportServiceProvider::class);
 $app->register(App\Providers\PassportDingoProvider::class);
 $app->register(Swap\Laravel\SwapServiceProvider::class);
+$app->register(Nord\Lumen\Cors\CorsServiceProvider::class);
 
 app('Dingo\Api\Auth\Auth')->extend('custom', function ($app) {
     return new App\Providers\PassportDingoProvider;
