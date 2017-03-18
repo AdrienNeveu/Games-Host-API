@@ -11,6 +11,7 @@
 |
 */
 
+use Carbon\Carbon;
 use App\Models\Game;
 use App\Models\GameServer;
 use App\Models\HostServer;
@@ -37,8 +38,9 @@ $factory->define(HostServer::class, function (Faker\Generator $faker) {
     
     return [
         'name'      => $faker->safeColorName,
+        'ip'        => $faker->ipv4,
         'auth_info' => [
-            'host'      => '127.0.0.1:22',
+            'host'      => $faker->ipv4,
             'username'  => 'root',
             'password'  => '',
             'key'       => '',
@@ -77,5 +79,6 @@ $factory->define(GameServer::class, function (Faker\Generator $faker) {
         'host_server_id' => HostServer::inRandomOrder()->first()->id,
         'players'        => $faker->numberBetween($game->minplayers, $game->maxplayers),
         'port'           => $faker->numberBetween(1111, 9999),
+        'expires_at'     => Carbon::now()->addDays($faker->numberBetween(25, 100))->format('Y-m-d H:i:s'),
     ];
 });

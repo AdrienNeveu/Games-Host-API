@@ -17,6 +17,7 @@ class CreateHostServersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->json('auth_info');
+            $table->string('ip');
         });
     }
 

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // User Model
         DB::table('users')->delete();
         factory(User::class, 10)->create();
+        User::first()->update(['email' => 'test@test.com']);
     
         // HostServer Model
         DB::table('host_servers')->delete();

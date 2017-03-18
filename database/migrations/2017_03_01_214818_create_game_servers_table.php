@@ -22,6 +22,7 @@ class CreateGameServersTable extends Migration
             $table->integer('players');
             $table->integer('port');
             $table->smallInteger("installed")->default(0); // 0: not installed, 1: installing, 2: installed
+            $table->dateTime('expires_at')->format('Y-m-d H:i:s');
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users');
